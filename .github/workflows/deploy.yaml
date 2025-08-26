@@ -58,11 +58,6 @@ jobs:
           vuln-type: 'os,library'
           severity: 'CRITICAL'
 
-      - name: Upload Trivy scan results to GitHub Security tab
-        uses: github/codeql-action/upload-sarif@v3
-        with:
-          sarif_file: 'trivy-results-backend.sarif'
-
       - name: Pull Frontend image
         run: docker pull ${{ secrets.DOCKER_USER }}/docker-project-frontend:latest
 
@@ -75,11 +70,6 @@ jobs:
           ignore-unfixed: true
           vuln-type: 'os,library'
           severity: 'CRITICAL'
-
-      - name: Upload Trivy scan results to GitHub Security tab
-        uses: github/codeql-action/upload-sarif@v3
-        with:
-          sarif_file: 'trivy-results-frontend.sarif'
 
   run-with-docker-compose:
     name: Push Docker image to DockerHub
