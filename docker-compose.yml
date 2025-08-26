@@ -1,0 +1,42 @@
+version: '3.8'
+services:
+  goapp:
+    container_name: goapp
+    image: baranovr605/docker-project-backend:latest
+    restart: unless-stopped
+    ports:
+      - "8081:8081"
+    networks:
+      - "app_network"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8081/health"]
+      interval: 30s
+      retries: 5
+      start_period: 10s
+      timeout: 10s
+    mem_limit: 256m
+    cpus: 0.5
+    read_only: true
+  
+  frontapp:
+    container_name: frontapp
+    depends_on:
+      - goapp
+    image: baranovr605/docker-project-frontend:latest
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    networks:
+      - "app_network"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:80/"]
+      interval: 30s
+      retries: 5
+      start_period: 10s
+      timeout: 10s
+    mem_limit: 256m
+    cpus: 0.5
+
+networks:
+  app_network:
+    driver: "bridge"
